@@ -98,20 +98,19 @@ function installPackage(command , name){
     })
 }
 
-exports.installDependencies = async function (dependencies , pckg_manager){
+exports.installDependencies = async function (dependencies){
     return new Promise((resolve , reject)=>{
         promises = []
-        switch (pckg_manager) {
-            case 'pip3':
-                dependencies.forEach(dependency=>{
-                    promises.push(installPackage(`pip3 install -Iv ${dependency.name}==${dependency.version}` , dependency.name))
-                })
-                break;
-            default:
-                console.log("Package manager not supported")
-                break;
-        }
-    
+        dependencies.forEach(dependency=>{
+            switch (dependency.pckg_manager) {
+                case 'pip3':                    
+                        promises.push(installPackage(`pip3 install -Iv ${dependency.name}==${dependency.version}` , dependency.name))
+                    break;
+                default:
+                    console.log("Package manager not supported")
+                    break;
+            }
+        })
         Promise.all(promises)
         .then(result=>{
             resolve('All dependencies installed')

@@ -12,12 +12,17 @@ const argv = require("yargs/yargs")(process.argv.slice(2))
     alias: '-r',
     describe : "Github repo name"
   })
-  .demandOption(["command" , "username" , "repo"], "Please specify the url to install")
+  .option("local" , {
+    alias: '-l',
+    describe : "install the application in current directory"
+  })
+  .demandOption(["command"], "Please specify the command")
   .help().argv;
 
 let command = argv.command
 let username = argv.username
 let repo_name = argv.repo
+let in_local = argv.local
 
 const cmdHandle = require('./commandHandlers')
 // const command = 'install'
@@ -26,8 +31,19 @@ const cmdHandle = require('./commandHandlers')
 
 const url = `https://codeload.github.com/${username}/${repo_name}/zip/main`
 
-if(command == 'install'){
-    cmdHandle.handleInstall(username , repo_name)
-}else{
-    console.log("Command not supported")
+switch(command){
+  case 'install':
+    if(!username || !repo_name){
+        console.log("Provide both username and repository name")
+        break
+    }else{
+      let location
+      if(in_local){
+        location = 'local'
+      }else{
+        location = 'global'
+      }
+      cmdHandle.handleInstall(username , repo_name , location)
+      break
+    }
 }
