@@ -107,7 +107,8 @@ exports.installDependencies = async function (dependencies){
                     promises.push(installPackage(`pip3 install -Iv ${dependency.name}==${dependency.version}` , dependency.name))
                     break;
                 case 'gdmm':
-                    promises.push(installPackage(`gdmm -c install -r ${dependency.repo_name} -u ${dependency.username}`))
+                    promises.push(installPackage(`gdmm -c install -r ${dependency.name} -u ${dependency.username}` , dependency.name))
+                    break
                 default:
                     console.log("Package manager not supported")
                     break;
