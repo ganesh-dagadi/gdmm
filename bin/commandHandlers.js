@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path= require('path')
 const process = require('process')
+const {spawn} = require('child_process')
 const functions = require('./functions')
 
 exports.handleInstall = async function (username , repo_name ,location){
@@ -42,4 +43,39 @@ exports.handleInstall = async function (username , repo_name ,location){
     }catch(err){
         console.log(err)
     }
+}
+
+exports.handleRun = async function(location , repo_name){
+    let curr_dir =  process.cwd()
+    let index = functions.nth_occurrence(curr_dir , String.fromCharCode(92) , 3)
+    let target_dir
+    if(location == 'global'){
+        target_dir = `${curr_dir.substring(0 , index)}\\gdmm\\modules\\${repo_name}`
+    }else{
+        target_dir = curr_dir
+    }
+    process.chdir(target_dir)
+    let data  = await functions.readFile(target_dir+'\\setup.json')
+    data = JSON.parse(data)
+    
+    run = data.run
+
+    if(run == undefined){
+        console.log("This module does not support run")
+        return 
+    }
+    run.indexOf(' ')
+    let command = run.substring( 0 ,run.indexOf(' '))
+    let arguments = [`${run.substring(run.indexOf(' ') + 1)}`]
+
+    const call = spawn(command , arguments)
+    call.stdout.on('data' , (data)=>{
+        console.log(data.toString())
+    })
+    call.stdout.on('error' , (err)=>{
+        console.log("An error occured" , err)
+    })
+    call.on('close' , (code)=>{
+        console.log(`The program exited with code : ${code}`)
+    })
 }

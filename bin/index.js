@@ -2,7 +2,7 @@
 const argv = require("yargs/yargs")(process.argv.slice(2))
   .option("command", {
     alias:'-c',
-    describe: "Command supported : (install)"
+    describe: "Command supported : (install , run)"
   })
   .option("username" , {
     alias : '-u',
@@ -14,7 +14,7 @@ const argv = require("yargs/yargs")(process.argv.slice(2))
   })
   .option("local" , {
     alias: '-l',
-    describe : "install the application in current directory"
+    describe : "install or run the application in current directory"
   })
   .demandOption(["command"], "Please specify the command")
   .help().argv;
@@ -46,4 +46,20 @@ switch(command){
       cmdHandle.handleInstall(username , repo_name , location)
       break
     }
+  case 'run':
+      let location
+      if(in_local){
+        location = 'local'
+      }else{
+        if(!repo_name){
+          console.log("Please provide repository name")
+          break
+        }
+        location = 'global'
+      }
+      cmdHandle.handleRun(location , repo_name)
+      break
+  default:
+    console.log("Command not supported")
+    break
 }
