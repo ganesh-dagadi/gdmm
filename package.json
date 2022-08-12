@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "adm-zip": "^0.5.9",
+    "prompt-sync": "^4.2.0",
     "yargs": "^17.5.1"
   }
 }

@@ -4,6 +4,7 @@ const process = require('process')
 const {spawn} = require('child_process')
 const functions = require('./functions')
 
+
 exports.handleInstall = async function (username , repo_name ,location){
     try{
         const url = `https://codeload.github.com/${username}/${repo_name}/zip/main`
@@ -79,3 +80,24 @@ exports.handleRun = async function(location , repo_name){
         console.log(`The program exited with code : ${code}`)
     })
 }
+
+
+exports.handleSetup = async function(){
+    let curr_dir =  process.cwd()
+    let data  = await functions.readFile(curr_dir+'\\setup.json')
+    data = JSON.parse(data)  
+    const setup = data.install
+    let arguments = await functions.getUserInput(setup)
+    let command = data.install.run.substring( 0 ,data.install.run.indexOf(' '))
+    arguments.unshift(data.install.run.substring(data.install.run.indexOf(' ') + 1))
+    const call = spawn(command , arguments)
+    call.stdout.on('data' , (data)=>{
+        console.log(data.toString())
+    })
+    call.stdout.on('error' , (err)=>{
+        console.log("An error occured" , err)
+    })
+    call.on('close' , (code)=>{
+        console.log(`The program exited with code : ${code}`)
+    })
+}   

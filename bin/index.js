@@ -2,7 +2,7 @@
 const argv = require("yargs/yargs")(process.argv.slice(2))
   .option("command", {
     alias:'-c',
-    describe: "Command supported : (install , run)"
+    describe: "Command supported : (install , run , setup)"
   })
   .option("username" , {
     alias : '-u',
@@ -59,6 +59,9 @@ switch(command){
       }
       cmdHandle.handleRun(location , repo_name)
       break
+  case 'setup':
+    cmdHandle.handleSetup()
+    break;
   default:
     console.log("Command not supported")
     break

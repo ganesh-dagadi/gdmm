@@ -1,6 +1,10 @@
 const https = require("https")
 const fs = require('fs')
 const admZip = require('adm-zip')
+const readline = require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout,
+});
 
 
 exports.modExists = function(path){
@@ -120,5 +124,30 @@ exports.installDependencies = async function (dependencies){
         }).catch(err=>{
             reject(err)
         }) 
+    })
+}
+
+function buildQuestionString (str , args , i){
+    if(args[i] == undefined){
+        str = str.concat("seperated by single space => ")
+        return str
+    }else{
+        str = str.concat(`,<${args[i].prompt}> `)
+        i++
+        return buildQuestionString(str , args , i)
+    }
+}
+
+
+module.exports.getUserInput = function(setup){
+    return new Promise((resolve)=>{
+        let question = "Enter "
+        question = buildQuestionString(question , setup.args , i=0)
+        readline.question(question , res=>{
+            output = res.split(' ')
+            readline.close()
+            readline.removeAllListeners()
+            resolve(output)
+        })
     })
 }
