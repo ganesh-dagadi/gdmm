@@ -57,7 +57,7 @@ switch(command){
         }
         location = 'global'
       }
-      cmdHandle.handleRun(location , repo_name)
+      code = cmdHandle.handleRun(location , repo_name)
       break
   case 'setup':
     cmdHandle.handleSetup()

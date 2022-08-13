@@ -78,6 +78,7 @@ exports.handleRun = async function(location , repo_name){
     })
     call.on('close' , (code)=>{
         console.log(`The program exited with code : ${code}`)
+        return code
     })
 }
 
@@ -87,9 +88,14 @@ exports.handleSetup = async function(){
     let data  = await functions.readFile(curr_dir+'\\setup.json')
     data = JSON.parse(data)  
     const setup = data.install
+    if(setup == undefined){
+        return console.log("This module does not support setup")
+    }
     let arguments = await functions.getUserInput(setup)
     let command = data.install.run.substring( 0 ,data.install.run.indexOf(' '))
     arguments.unshift(data.install.run.substring(data.install.run.indexOf(' ') + 1))
+
+    console.log("Beginning setup. do not kill the terminal!! Doing so will crash the application")
     const call = spawn(command , arguments)
     call.stdout.on('data' , (data)=>{
         console.log(data.toString())
@@ -98,6 +104,10 @@ exports.handleSetup = async function(){
         console.log("An error occured" , err)
     })
     call.on('close' , (code)=>{
+        if(code == 0){
+            console.log('Setup completed successfully')
+        }
         console.log(`The program exited with code : ${code}`)
+        process.exit(0)
     })
 }   

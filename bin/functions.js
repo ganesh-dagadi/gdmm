@@ -90,14 +90,22 @@ exports.readFile = function(filePath){
 
 const {exec} = require('child_process')
 
-function installPackage(command , name){
+function installPackage(command,  name){
     return new Promise((resolve , reject)=>{
-        exec(command , (err , stdout , stderr)=>{
-            if(err) reject(err)
-            else{
-                console.log(`Installed ${name}`)
-                resolve()
+        
+       let call = exec(command);
+       call.stdout.on('data' , (data)=>{
+        console.log(data.toString())
+        })
+        call.stdout.on('error' , (err)=>{
+            console.log("An error occured" , err.toString())
+        })
+        call.on('close' , (code)=>{
+            console.log(`The program exited with code : ${code}`)
+            if(code == 0){
+                console.log(`installed ${name}`)
             }
+            resolve()
         })
     })
 }
