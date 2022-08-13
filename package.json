@@ -1,6 +1,6 @@
 {
   "name": "gd_module_manager",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Module mangager for Ganesh Dagadi's Software",
   "main": "bin/index.js",
   "scripts": {
@@ -10,10 +10,14 @@
     "gdmm": "./bin/index.js"
   },
   "author": "Ganesh Dagadi",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "adm-zip": "^0.5.9",
     "prompt-sync": "^4.2.0",
     "yargs": "^17.5.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ganesh-dagadi/gdmm.git"
   }
 }
