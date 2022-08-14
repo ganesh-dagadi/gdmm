@@ -46,7 +46,7 @@ npm install gdmm -g
 gdmm -c install -r repository_name -u ganesh-dagadi 
 ```
 
- This will install the package in `C:\Program Files\gdmm\modules\` also installing all the dependent packages
+ This will install the package in `C:\Users\<username>\gdmm\modules\` also installing all the dependent packages
 
 <br/>
 

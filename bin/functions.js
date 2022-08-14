@@ -51,23 +51,7 @@ exports.extractArchive = async function(filepath , dest) {
       console.log(`Something went wrong. ${e}`);
     }
   }
-exports.nth_occurrence = function (string, char, nth) {
-    var first_index = string.indexOf(char);
-    var length_up_to_first_index = first_index + 1;
 
-    if (nth == 1) {
-        return first_index;
-    } else {
-        var string_after_first_occurrence = string.slice(length_up_to_first_index);
-        var next_occurrence = exports.nth_occurrence(string_after_first_occurrence, char, nth - 1);
-
-        if (next_occurrence === -1) {
-            return -1;
-        } else {
-            return length_up_to_first_index + next_occurrence;  
-        }
-    }
-}
 exports.deleteDir = function (path){
     return new Promise((resolve , reject)=>{
         fs.rm(path , {recursive : true} , (err)=>{
